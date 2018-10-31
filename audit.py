@@ -1,6 +1,7 @@
 import csv
 import sys
 import argparse
+import openElectionsParser
 
 def parse_args(argv):
     policy_file = ''
@@ -29,19 +30,6 @@ def parse_args(argv):
     if not status:
         print("Maybe you want to use -H or -s or -p or -p as arguments ?") 
 
-def open_csv_file(filename):
-    with open(filename) as csv_file:
-    csv_reader = csv.reader(csv_file, delimiter=',')
-    line_count = 0
-    for row in csv_reader:
-        if line_count == 0:
-            print(f'Column names are {", ".join(row)}')
-            line_count += 1
-        else:
-            print(f'\t{row[0]} works in the {row[1]} department, and was born in {row[2]}.')
-            line_count += 1
-    print(f'Processed {line_count} lines.')
-
 def precinct_count(audited, precincts):
     n = 4794
     total = 1
@@ -50,7 +38,4 @@ def precinct_count(audited, precincts):
     print(total)
 
 if __name__ == "__main__":
-   parse_args(sys.argv[1:])
-   open_csv_file(policy_filename)
-   open_csv_file(data_filename)
-   precinct_count(300, 4800)
+   openElectionsParser.parse("20161108__mi__general__precinct.csv", 'precinct', 'President')
