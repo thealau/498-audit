@@ -1,6 +1,8 @@
 import csv   
 
 
+
+
 def parse(filename, data_format, office):
     with open(filename, mode='r') as csv_file:
         csv_reader = csv.DictReader(csv_file)
@@ -23,7 +25,6 @@ def parse(filename, data_format, office):
                 else:
                     master_dict['vote_totals'][row['candidate']] += int(row['votes'])
         for key, value in data_dict.items():
-            master_dict['results'].append({key: value})
-        print(master_dict['vote_totals'])
-        print(master_dict['results'])
+            master_dict['results'].append({"name": key, "vote_totals": value})
+        # print(master_dict['vote_totals'])
         return master_dict
