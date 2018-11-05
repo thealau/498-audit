@@ -107,6 +107,7 @@ def audit_precinct(percentage, data_dict):
     winner_name = state_wide_sorted[0][0]
     second_place = state_wide_sorted[1][0]
     total_num_precincts = len(data_dict["results"])
+    print(total_num_precincts)
     precincts_sorted = sorted(data_dict["results"], key=lambda k: k["vote_totals"][winner_name], reverse=True)
     winner_total = 0
     count = 0
