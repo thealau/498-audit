@@ -33,7 +33,7 @@ def get_column():
             'type': 'list',
             'name': 'col',
             'message': 'What column do you want to parse by?',
-            'choices': ['precinct', 
+            'choices': ['precinct',
             'ward', 
             'district']
         }
@@ -48,7 +48,7 @@ def get_mode():
             'name': 'mode',
             'message': 'Select mode',
             'choices': ['Percentage of all precincts.', 
-            'Percentage/number of precincts in each county.', 
+            'Percentage of precincts in each county.', 
             'Percentage of ballots in each county.', 
             'Percentage of ballots in the state.', 
             'Risk-limiting audit.', 'Automatic.']
