@@ -2,7 +2,7 @@ from __future__ import print_function, unicode_literals
 import csv
 import sys
 import openElectionsParser
-from math import ceil
+import calculations
 from PyInquirer import style_from_dict, Token, prompt, Separator
 from PyInquirer import Validator, ValidationError
 from pprint import pprint
@@ -35,7 +35,8 @@ def get_column():
             'message': 'What column do you want to parse by?',
             'choices': ['precinct',
             'ward', 
-            'district']
+            'district',
+            'county']
         }
     ]
     answers = prompt(questions)
@@ -94,32 +95,12 @@ def get_input(args):
             exit(0)
     else:
         col = get_column()
+        # TODO: add a func to get race from user
         data_dict = openElectionsParser.parse(args[1], col, 'President')
     mode = get_mode()
     if (mode == 'Percentage of all precincts.'):
         percent = get_percent()
-        audit_precinct(percent, data_dict)
-
-def audit_precinct(percentage, data_dict):
-    state_wide_sorted = sorted(data_dict["vote_totals"].items(), key=lambda kv: kv[1], reverse=True)
-    difference = state_wide_sorted[0][1] - state_wide_sorted[1][1]
-    votes_to_flip = difference/2
-    winner_name = state_wide_sorted[0][0]
-    second_place = state_wide_sorted[1][0]
-    total_num_precincts = len(data_dict["results"])
-    print(total_num_precincts)
-    precincts_sorted = sorted(data_dict["results"], key=lambda k: k["vote_totals"][winner_name], reverse=True)
-    winner_total = 0
-    count = 0
-    while winner_total < votes_to_flip:
-        winner_total += precincts_sorted[count]["vote_totals"][winner_name]
-        count += 1
-    num_to_flip = count
-    prob_miss_interf = 1
-    print(num_to_flip)
-    for i in range(0, ceil(percentage*total_num_precincts)):
-        prob_miss_interf *= (total_num_precincts - i - num_to_flip)/(total_num_precincts - i)
-    print("Probability of detecting interference:", round(1 - prob_miss_interf, 2))
+        calculations.audit_precinct(percent, data_dict)
 
 if __name__ == "__main__":
     get_input(sys.argv)
