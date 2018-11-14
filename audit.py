@@ -71,6 +71,17 @@ class NumberValidator(Validator):
                 message='Please enter a number between 0 and 1, inclusive',
                 cursor_position=len(document.text))  # Move cursor to end
 
+def get_race():
+    questions = [
+        {
+            'type': 'input',
+            'name': 'race',
+            'message': 'Enter the race to audit.'
+        }
+    ]
+    answers = prompt(questions)
+    return answers['race']
+
 def get_percent():
     questions = [
         {
@@ -86,7 +97,7 @@ def get_percent():
 
 def get_input(args):
     data_dict = {}
-    if (len(args) == 0):
+    if (len(args) == 1):
         state = get_state()
         if (state == 'Michigan'):
             data_dict = openElectionsParser.parse("20161108__mi__general__precinct.csv", 'precinct', 'President')
@@ -95,8 +106,8 @@ def get_input(args):
             exit(0)
     else:
         col = get_column()
-        # TODO: add a func to get race from user
-        data_dict = openElectionsParser.parse(args[1], col, 'President')
+        race = get_race()
+        data_dict = openElectionsParser.parse(args[1], col, race)
     mode = get_mode()
     if (mode == 'Percentage of all precincts.'):
         percent = get_percent()
@@ -104,6 +115,10 @@ def get_input(args):
     elif (mode == 'Percentage of ballots in each county.'):
         percent = get_percent()
         calculations.audit_percent_votes_county(percent, data_dict)
+    elif (mode == 'Percentage of ballots in the state.'):
+        percent = get_percent()
+        calculations.audit_state(percent, data_dict)
+
 
 if __name__ == "__main__":
     get_input(sys.argv)

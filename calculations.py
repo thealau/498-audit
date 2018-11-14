@@ -19,7 +19,7 @@ def audit_precinct(percentage, data_dict):
     print(num_to_flip)
     for i in range(0, ceil(percentage*total_num_precincts)):
         prob_miss_interf *= (total_num_precincts - i - num_to_flip)/(total_num_precincts - i)
-    print("Probability of detecting interference:", round(1 - prob_miss_interf, 3))
+    print("Probability of detecting interference:", round(1 - prob_miss_interf, 2))
 
 
 def audit_percent_votes_county(percentage, data_dict):
@@ -43,8 +43,19 @@ def audit_percent_votes_county(percentage, data_dict):
         for i in range(0, ceil(percentage * num_votes_county)):
             prob_miss_interf *= (num_votes_county - i - votes_flipped)/(num_votes_county - i)
         print(prob_miss_interf)
-    print("Probability of detecting interference:", round(1 - prob_miss_interf, 3))
+    print("Probability of detecting interference:", round(1 - prob_miss_interf, 2))
 
 
-
-
+def audit_state(percentage, data_dict):
+    state_wide_sorted = sorted(data_dict["vote_totals"].items(), key=lambda kv: kv[1], reverse=True)
+    difference = state_wide_sorted[0][1] - state_wide_sorted[1][1]
+    total = 0
+    for i in range(0, len(data_dict)):
+        total += state_wide_sorted[i][1]
+    votes_to_flip = difference/2
+    print(votes_to_flip)
+    print(total)
+    prob_miss_interf = 1
+    for i in range(0, ceil(percentage*total)):
+        prob_miss_interf *= (total - votes_to_flip - i) / (total - i)
+    print("Probability of detecting interference:", round(1 - prob_miss_interf, 2))
