@@ -101,6 +101,9 @@ def get_input(args):
     if (mode == 'Percentage of all precincts.'):
         percent = get_percent()
         calculations.audit_precinct(percent, data_dict)
+    elif (mode == 'Percentage of ballots in each county.'):
+        percent = get_percent()
+        calculations.audit_percent_votes_county(percent, data_dict)
 
 if __name__ == "__main__":
     get_input(sys.argv)
