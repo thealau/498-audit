@@ -1,4 +1,5 @@
-from math import ceil
+from math import ceil, factorial
+from decimal import Decimal
 
 def audit_precinct(percentage, data_dict):
     state_wide_sorted = sorted(data_dict["vote_totals"].items(), key=lambda kv: kv[1], reverse=True)
@@ -33,16 +34,27 @@ def audit_percent_votes_county(percentage, data_dict):
     print(winner_name)
     print(second_place)
     print(votes_to_flip)
-    prob_miss_interf = 1
+    prob_miss_interf = Decimal(1)
     for county in data_dict["results"]:
         winner_votes = county["vote_totals"][winner_name]
         second_place_votes = county["vote_totals"][second_place]
         votes_flipped = ((winner_votes + second_place_votes)/first_second_total) * votes_to_flip
         print(votes_flipped)
         num_votes_county = county["vote_totals"]["num_votes"]
-        for i in range(0, ceil(percentage * num_votes_county)):
-            prob_miss_interf *= (num_votes_county - i - votes_flipped)/(num_votes_county - i)
-        print(prob_miss_interf)
+        num_sampled = int(ceil(percentage * num_votes_county))
+        bad_thresh = int(ceil(num_sampled*.005))
+        print(bad_thresh)
+        county_prob = Decimal(0)
+        for i in range(0, bad_thresh):
+            temp_prob = Decimal(1)
+            for j in range(0, num_sampled):
+                if j < i:
+                    temp_prob *= Decimal(votes_flipped/(num_votes_county-j))
+                else:
+                    temp_prob *= Decimal((num_votes_county - j - votes_flipped)/(num_votes_county - j))
+            temp_prob *= factorial(num_sampled)//factorial(num_sampled-i)//factorial(i)
+            county_prob += temp_prob
+        prob_miss_interf *= county_prob
     print("Probability of detecting interference:", round(1 - prob_miss_interf, 2))
 
 
@@ -55,7 +67,16 @@ def audit_state(percentage, data_dict):
     votes_to_flip = difference/2
     print(votes_to_flip)
     print(total)
-    prob_miss_interf = 1
-    for i in range(0, ceil(percentage*total)):
-        prob_miss_interf *= (total - votes_to_flip - i) / (total - i)
+    num_sampled = int(ceil(percentage*total))
+    bad_thresh = int(ceil(num_sampled * .005))
+    prob_miss_interf = 0
+    for i in range(0, bad_thresh):
+        temp_prob = Decimal(1)
+        for j in range(0, num_sampled):
+            if j < i:
+                temp_prob *= Decimal(votes_to_flip/(total-j))
+            else:
+                temp_prob *= Decimal((total - votes_to_flip - j) / (total - j))
+        temp_prob *= factorial(num_sampled)//factorial(num_sampled-i)//factorial(i)
+        prob_miss_interf += temp_prob
     print("Probability of detecting interference:", round(1 - prob_miss_interf, 2))
