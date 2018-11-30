@@ -97,18 +97,20 @@ def get_percent():
 
 def get_input(args):
     data_dict = {}
+    mode = ""
     if (len(args) == 1):
         state = get_state()
         if (state == 'Michigan'):
             data_dict = openElectionsParser.parse("20161108__mi__general__precinct.csv", 'precinct', 'President')
+            mode = get_mode()
         else:
             print("Program under construction.")
             exit(0)
     else:
         col = get_column()
         race = get_race()
-        data_dict = openElectionsParser.parse(args[1], col, race)
-    mode = get_mode()
+        mode = get_mode()
+        data_dict = openElectionsParser.parse(args[1], col, race, mode)
     if (mode == 'Percentage of all precincts.'):
         percent = get_percent()
         calculations.audit_precinct(percent, data_dict)
@@ -118,6 +120,9 @@ def get_input(args):
     elif (mode == 'Percentage of ballots in the state.'):
         percent = get_percent()
         calculations.audit_state(percent, data_dict)
+    elif (mode == 'Percentage of precincts in each county.'):
+        percent = get_percent()
+        calculations.audit_percent_precincts_county(percent, data_dict)
 
 
 if __name__ == "__main__":
