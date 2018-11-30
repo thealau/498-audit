@@ -42,6 +42,22 @@ def get_column():
     answers = prompt(questions)
     return answers['col']
 
+
+def get_columns():
+    questions = [
+        {
+            'type': 'list',
+            'name': 'col',
+            'message': 'What column represents the precincts for this data?',
+            'choices': ['precinct',
+            'ward', 
+            'district']
+        }
+    ]
+    answers = prompt(questions)
+    return answers['col']
+
+
 def get_mode():
     questions = [
         {
@@ -107,9 +123,13 @@ def get_input(args):
             print("Program under construction.")
             exit(0)
     else:
-        col = get_column()
-        race = get_race()
         mode = get_mode()
+        col = ""
+        if mode == 'Percentage of precincts in each county.':
+            col = get_columns()
+        else:
+            col = get_column()
+        race = get_race()
         data_dict = openElectionsParser.parse(args[1], col, race, mode)
     if (mode == 'Percentage of all precincts.'):
         percent = get_percent()

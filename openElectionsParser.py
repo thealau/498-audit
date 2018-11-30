@@ -1,6 +1,6 @@
 import csv   
 
-def parse_percent_precincts_county(csv_file, office):
+def parse_percent_precincts_county(csv_file, data_format, office):
     csv_reader = csv.DictReader(csv_file)
     headers = csv_reader.fieldnames
     print(headers)
@@ -13,9 +13,9 @@ def parse_percent_precincts_county(csv_file, office):
             if row['office'] == office:
                 if row["county"] not in data_dict: 
                     data_dict[row["county"]] = {}
-                if row["precinct"] not in data_dict[row["county"]]:
-                    data_dict[row["county"]][row["precinct"]] = {}
-                data_dict[row["county"]][row["precinct"]][row["candidate"]] = int(row["votes"])
+                if row[data_format] not in data_dict[row["county"]]:
+                    data_dict[row["county"]][row[data_format]] = {}
+                data_dict[row["county"]][row[data_format]][row["candidate"]] = int(row["votes"])
                 if row['candidate'] not in master_dict['vote_totals']:
                     master_dict['vote_totals'][row['candidate']] = int(row['votes'])
                 else:
@@ -51,6 +51,6 @@ def parse_county_or_precinct(csv_file, data_format, office):
 def parse(filename, data_format, office, audit_type):
     with open(filename, mode='r') as csv_file:
         if audit_type == 'Percentage of precincts in each county.':
-            return parse_percent_precincts_county(csv_file, office)
+            return parse_percent_precincts_county(csv_file, data_format, office)
         return parse_county_or_precinct(csv_file, data_format, office)
         
