@@ -1,13 +1,12 @@
-"""Flask app for search server."""
+"""Flask app for audit program."""
 import json
-import search
 import requests
 import flask
 from flask import request
 from subprocess import Popen, PIPE, STDOUT
 
 
-@search.app.route('/')
+@app.route('/')
 def show_audit():
     """Get results of audit query."""
     state = request.args.get('state')
