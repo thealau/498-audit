@@ -80,3 +80,55 @@ def audit_state(percentage, data_dict):
         temp_prob *= factorial(num_sampled)//factorial(num_sampled-i)//factorial(i)
         prob_miss_interf += temp_prob
     print("Probability of detecting interference:", round(1 - prob_miss_interf, 2))
+
+
+def audit_percent_precincts_county(percentage, data_dict):
+    state_wide_sorted = sorted(data_dict["vote_totals"].items(), key=lambda kv: kv[1], reverse=True)
+    difference = state_wide_sorted[0][1] - state_wide_sorted[1][1]
+    votes_to_flip = difference/2
+    winner_name = state_wide_sorted[0][0]
+    second_place = state_wide_sorted[1][0]
+    print(winner_name, second_place)
+    print(votes_to_flip)
+    votes_flipped = 0
+    counties = {}
+    for cty in data_dict["results"]:
+        precincts = list(cty["precincts"].values())
+        sorted_precincts = sorted(precincts, key=lambda k: k[winner_name], reverse=True)
+        counties[cty["name"]] = {"sorted_precincts": sorted_precincts, "num_flipped": 0}
+    probabilities = {}
+    while votes_flipped < votes_to_flip:
+        max_score = 0
+        max_county = ""
+        for county, precincts in counties.items():
+            sorted_precincts = precincts["sorted_precincts"]
+            num_precincts_flipped = precincts["num_flipped"]
+            num_precincts = len(sorted_precincts)
+            prob_miss_interf = 1
+            for i in range(ceil(percentage*num_precincts)):
+                prob_miss_interf *= (num_precincts - i - num_precincts_flipped - 1)/(num_precincts - i)
+            total_probability = 1
+            for key, value in probabilities.items():
+                if key != county:
+                    total_probability *= value
+            total_probability *= prob_miss_interf
+            curr_score = total_probability * sorted_precincts[num_precincts_flipped][winner_name]
+            if curr_score > max_score:
+                max_score = curr_score
+                max_county = county
+                max_county_prob = prob_miss_interf
+                max_county_votes = sorted_precincts[num_precincts_flipped][winner_name]
+        votes_flipped += max_county_votes
+        print(max_county_votes)
+        print(max_county)
+        probabilities[max_county] = max_county_prob
+        counties[max_county]["num_flipped"] += 1
+    final_prob = 1
+    for value in probabilities.values():
+        final_prob *= value
+    print("Probability of detecting interference:", round(1 - final_prob, 2))
+
+
+
+
+
