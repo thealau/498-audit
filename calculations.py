@@ -9,8 +9,7 @@ def audit_precinct(percentage, data_dict):
     second_place = state_wide_sorted[1][0]
     total_num_precincts = len(data_dict["results"])
     print(total_num_precincts)
-    print(data_dict["results"])
-    precincts_sorted = sorted(data_dict["results"], key=lambda k: k["vote_totals"][winner_name], reverse=True)
+    precincts_sorted = sorted(data_dict["results"], key=lambda k: k["vote_totals"].get(winner_name, 0), reverse=True)
     winner_total = 0
     count = 0
     while winner_total < votes_to_flip:
@@ -91,11 +90,12 @@ def audit_percent_precincts_county(percentage, data_dict):
     second_place = state_wide_sorted[1][0]
     print(winner_name, second_place)
     print(votes_to_flip)
+    print(data_dict["results"])
     votes_flipped = 0
     counties = {}
     for cty in data_dict["results"]:
         precincts = list(cty["precincts"].values())
-        sorted_precincts = sorted(precincts, key=lambda k: k[winner_name], reverse=True)
+        sorted_precincts = sorted(precincts, key=lambda k: k.get(winner_name, 0), reverse=True)
         counties[cty["name"]] = {"sorted_precincts": sorted_precincts, "num_flipped": 0}
     probabilities = {}
     while votes_flipped < votes_to_flip:
