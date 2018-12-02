@@ -113,7 +113,7 @@ def audit_percent_precincts_county(percentage, data_dict):
                 if key != county:
                     total_probability *= value
             total_probability *= prob_miss_interf
-            curr_score = total_probability * sorted_precincts[num_precincts_flipped][winner_name]
+            curr_score = total_probability * sorted_precincts[num_precincts_flipped].get(winner_name, 0)
             if curr_score > max_score:
                 max_score = curr_score
                 max_county = county
