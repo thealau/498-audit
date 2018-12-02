@@ -9,6 +9,7 @@ def audit_precinct(percentage, data_dict):
     second_place = state_wide_sorted[1][0]
     total_num_precincts = len(data_dict["results"])
     print(total_num_precincts)
+    print(data_dict["results"])
     precincts_sorted = sorted(data_dict["results"], key=lambda k: k["vote_totals"][winner_name], reverse=True)
     winner_total = 0
     count = 0
@@ -20,7 +21,7 @@ def audit_precinct(percentage, data_dict):
     print(num_to_flip)
     for i in range(0, ceil(percentage*total_num_precincts)):
         prob_miss_interf *= (total_num_precincts - i - num_to_flip)/(total_num_precincts - i)
-    print("Probability of detecting interference:", round(1 - prob_miss_interf, 2))
+    print("Probability of detecting interference:", round(1 - prob_miss_interf, 4))
 
 
 def audit_percent_votes_county(percentage, data_dict):
@@ -55,7 +56,7 @@ def audit_percent_votes_county(percentage, data_dict):
             temp_prob *= factorial(num_sampled)//factorial(num_sampled-i)//factorial(i)
             county_prob += temp_prob
         prob_miss_interf *= county_prob
-    print("Probability of detecting interference:", round(1 - prob_miss_interf, 2))
+    print("Probability of detecting interference:", round(1 - prob_miss_interf, 4))
 
 
 def audit_state(percentage, data_dict):
@@ -79,7 +80,7 @@ def audit_state(percentage, data_dict):
                 temp_prob *= Decimal((total - votes_to_flip - j) / (total - j))
         temp_prob *= factorial(num_sampled)//factorial(num_sampled-i)//factorial(i)
         prob_miss_interf += temp_prob
-    print("Probability of detecting interference:", round(1 - prob_miss_interf, 2))
+    print("Probability of detecting interference:", round(1 - prob_miss_interf, 4))
 
 
 def audit_percent_precincts_county(percentage, data_dict):
@@ -126,7 +127,7 @@ def audit_percent_precincts_county(percentage, data_dict):
     final_prob = 1
     for value in probabilities.values():
         final_prob *= value
-    print("Probability of detecting interference:", round(1 - final_prob, 2))
+    print("Probability of detecting interference:", round(1 - final_prob, 4))
 
 
 
