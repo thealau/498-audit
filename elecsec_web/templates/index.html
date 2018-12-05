@@ -65,13 +65,12 @@
   			</datalist>
   			<br>
   			Mode:<br>
-  			<input list="modes" name="mode">
-  			<datalist id="modes">
+  			<input list="audit_types" name="audit_type">
+  			<datalist id="audit_types">
     			<option value="Percentage of all precincts.">
     			<option value="Percentage of precincts in each county.">
     			<option value="Percentage of ballots in each county.">
     			<option value="Percentage of ballots in the state.">
-    			<option value="Risk-limiting audit.">
   			</datalist>
   			<br>
   			Column:<br>
@@ -90,17 +89,16 @@
   			</datalist>
   			<br>
   			Percent:<br>
-  			<input type="range" min="0" max="1" step="0.01" name="percent">
+  			<input type="range" min="0" max="1" step="0.01" value=".025" name="percent" oninput="percentOutputId.value = percentInputId.value">
+        <output name="percentOutputName" id="percentOutputId">.025</output>
+        <br>
   			<input type="submit" value="search"/>
   			<br>
 		</form>
 	</div>
 
 	{% if context is defined %}
-		{% if not context %}
-			Error, please check your input
-		{% endif %}
-		Probability of detecting interference: {% context %}
+		{{ context }}
 
 	{% endif %}
 
