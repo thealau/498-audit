@@ -28,9 +28,10 @@ def get_input(mode, input_csv):
     else:
         if (mode == "auto"):
             state = get_state()
-            if (state == 'Michigan'):
+            if (input_csv == 'Michigan'):
                 data_dict = openElectionsParser.parse("csvs/20161108__mi__general__precinct.csv", 'precinct', 'President', 'Percentage of precincts in each county.')
-                audit_type = get_audit_type()
+                audit_type = "Percentage of precincts in each county."
+                percent = .0625
             else:
                 print("Program under construction.")
                 exit(0)
