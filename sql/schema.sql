@@ -1,6 +1,6 @@
 CREATE TABLE policies(
 	state VARCHAR(20) NOT NULL,
-	policy VARCHAR(40) NOT NULL,
+	policy VARCHAR(300) NOT NULL,
 	prob FLOAT(4) NOT NULL,
 	PRIMARY KEY(state)
 );

@@ -11,8 +11,14 @@ def show_index():
     """Get results of audit query."""
     if(request.args.get('btn') == "search"):
         context = {}
-        context['policy'] = "haha!"
+        state_data = elecsec_web.model.query_db(
+                "SELECT * from policies where \
+            state = ?", [request.args.get('state_audit')], one=True)
+        context['state'] = request.args.get('state_audit')
+        context['policy'] = state_data['policy']
+        context['prob'] = state_data['prob']
         return flask.render_template("index.html", context=context)
+
     if(request.args.get('btn') == "calculate"):
         state_csvs_dict = {};
         state_csvs_dict["Michigan"] = "20161108__mi__general__precinct.csv"
@@ -30,6 +36,11 @@ def show_index():
             # pass rest of options
             audit_stdout = p.communicate(input=msg)[0]
             context = {}
+            context['state'] = request.args.get('state')
+            context['audit_type'] = request.args.get('audit_type')
+            context['col'] = request.args.get('col')
+            context['race'] = request.args.get('race')
+            context['percent'] = request.args.get('percent')
             context['prob'] = audit_stdout.decode()
 
             return flask.render_template("index.html", context=context)
