@@ -179,7 +179,7 @@
 	</div>
 
 	{% if context is defined %}
-    {% if context.prob is defined %}
+    {% if context.audit_type is defined %}
       An audit in {{ context.state }} using audit type " {{ context.audit_type }} " and parsing the 2016 {{ context.race }} race data on {{ context.col }} with an auditing percentage of {{ context.percent}} : <br>
 		  {{ context.prob }}
     {% endif %}
