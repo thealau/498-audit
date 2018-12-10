@@ -90,7 +90,6 @@ def audit_percent_precincts_county(percentage, data_dict):
     second_place = state_wide_sorted[1][0]
     print(winner_name, second_place)
     print(votes_to_flip)
-    print(data_dict["results"])
     votes_flipped = 0
     counties = {}
     for cty in data_dict["results"]:
