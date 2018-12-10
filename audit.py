@@ -1,11 +1,58 @@
+#!/usr/bin/env python
+
 from __future__ import print_function, unicode_literals
 import csv
 import sys
 import openElectionsParser
 import calculations
+import click
 from PyInquirer import style_from_dict, Token, prompt, Separator
 from PyInquirer import Validator, ValidationError
 from pprint import pprint
+
+@click.command()
+@click.option('--mode', '-m', help='Choose a mode: cli, web, auto')
+@click.argument('input_csv')
+def get_input(mode, input_csv):
+    data_dict = {}
+    audit_type = ""
+    percent = 0
+    if (mode == "web"):
+        msg = sys.stdin.readline()
+        inputs = msg.split(',')
+        audit_type = inputs[0]
+        col = inputs[1]
+        race = inputs[2]
+        percent = float(inputs[3])
+        data_dict = openElectionsParser.parse("csvs/"+input_csv, col, race, audit_type)
+    else:
+        if (mode == "auto"):
+            state = get_state()
+            if (input_csv == 'Michigan'):
+                data_dict = openElectionsParser.parse("csvs/20161108__mi__general__precinct.csv", 'precinct', 'President', 'Percentage of precincts in each county.')
+                audit_type = "Percentage of precincts in each county."
+                percent = .0625
+            else:
+                print("Program under construction.")
+                exit(0)
+        else:
+            audit_type = get_audit_type()
+            col = ""
+            if audit_type == 'Percentage of precincts in each county.':
+                col = get_columns()
+            else:
+                col = get_column()
+            race = get_race()
+            data_dict = openElectionsParser.parse("csvs/"+input_csv, col, race, audit_type)
+            percent = get_percent()
+    if (audit_type == 'Percentage of all precincts.'):
+        calculations.audit_precinct(percent, data_dict)
+    elif (audit_type == 'Percentage of ballots in each county.'):
+        calculations.audit_percent_votes_county(percent, data_dict)
+    elif (audit_type == 'Percentage of ballots in the state.'):
+        calculations.audit_state(percent, data_dict)
+    elif (audit_type == 'Percentage of precincts in each county.'):
+        calculations.audit_percent_precincts_county(percent, data_dict)
 
 def get_state():
     state_prompt = {
@@ -58,21 +105,20 @@ def get_columns():
     return answers['col']
 
 
-def get_mode():
+def get_audit_type():
     questions = [
         {
             'type': 'list',
-            'name': 'mode',
-            'message': 'Select mode',
+            'name': 'audit_type',
+            'message': 'Select audit_type',
             'choices': ['Percentage of all precincts.', 
             'Percentage of precincts in each county.', 
             'Percentage of ballots in each county.', 
-            'Percentage of ballots in the state.', 
-            'Risk-limiting audit.', 'Automatic.']
+            'Percentage of ballots in the state.']
         }
     ]
     answers = prompt(questions)
-    return answers['mode']
+    return answers['audit_type']
 
 class NumberValidator(Validator):
     def validate(self, document):
@@ -111,39 +157,5 @@ def get_percent():
     answers = prompt(questions)
     return answers['percent']
 
-def get_input(args):
-    data_dict = {}
-    mode = ""
-    if (len(args) == 1):
-        state = get_state()
-        if (state == 'Michigan'):
-            data_dict = openElectionsParser.parse("20161108__mi__general__precinct.csv", 'precinct', 'President')
-            mode = get_mode()
-        else:
-            print("Program under construction.")
-            exit(0)
-    else:
-        mode = get_mode()
-        col = ""
-        if mode == 'Percentage of precincts in each county.':
-            col = get_columns()
-        else:
-            col = get_column()
-        race = get_race()
-        data_dict = openElectionsParser.parse(args[1], col, race, mode)
-    if (mode == 'Percentage of all precincts.'):
-        percent = get_percent()
-        calculations.audit_precinct(percent, data_dict)
-    elif (mode == 'Percentage of ballots in each county.'):
-        percent = get_percent()
-        calculations.audit_percent_votes_county(percent, data_dict)
-    elif (mode == 'Percentage of ballots in the state.'):
-        percent = get_percent()
-        calculations.audit_state(percent, data_dict)
-    elif (mode == 'Percentage of precincts in each county.'):
-        percent = get_percent()
-        calculations.audit_percent_precincts_county(percent, data_dict)
-
-
 if __name__ == "__main__":
-    get_input(sys.argv)
+    get_input()

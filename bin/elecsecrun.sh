@@ -7,7 +7,7 @@ set -x
 
 # Set FLASK_DEBUG, FLASK_APP, INSTA485_SETTINGS
 export FLASK_DEBUG=True
-export FLASK_APP=elecsec
+export FLASK_APP=elecsec_web
 
 # Run development server on port 8000
 flask run --host 0.0.0.0 --port 8000

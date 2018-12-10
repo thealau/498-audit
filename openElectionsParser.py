@@ -3,7 +3,7 @@ import csv
 def parse_percent_precincts_county(csv_file, data_format, office):
     csv_reader = csv.DictReader(csv_file)
     headers = csv_reader.fieldnames
-    print(headers)
+    # print(headers)
     master_dict = {}
     data_dict = {}
     master_dict['vote_totals'] = {}
@@ -27,7 +27,7 @@ def parse_percent_precincts_county(csv_file, data_format, office):
 def parse_county_or_precinct(csv_file, data_format, office):
     csv_reader = csv.DictReader(csv_file)
     headers = csv_reader.fieldnames
-    print(headers)
+    # print(headers)
     master_dict = {}
     data_dict = {}
     master_dict['vote_totals'] = {}

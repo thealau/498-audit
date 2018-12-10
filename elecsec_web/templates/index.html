@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<title>Post-Election Audit Information and Simulation</title>
+</head>
+
+<header>
+  Welcome to Post-Election Audit Information and Simulation
+</header>
+<br>
+<body>
+  <div class="container">
+    Select a state to view its current auditing policies.
+    <form action="" method="get" enctype="multipart/form-data">
+        State:<br>
+        <input list="states" name="state_audit">
+        <datalist id="states">
+          <option value="Alabama">
+          <option value="Alaska">
+          <option value="Arizona">
+          <option value="Arkansas">
+          <option value="California">
+          <option value="Colorado">
+          <option value="Connecticut">
+          <option value="District of Columbia">
+          <option value="Delaware">
+          <option value="Florida">
+          <option value="Georgia">
+          <option value="Hawaii">
+          <option value="Idaho">
+          <option value="Illinois">
+          <option value="Indiana">
+          <option value="Iowa">
+          <option value="Kansas">
+          <option value="Kentucky">
+          <option value="Louisiana">
+          <option value="Maine">
+          <option value="Maryland">
+          <option value="Massachusetts">
+          <option value="Michigan">
+          <option value="Minnesota">
+          <option value="Mississippi">
+          <option value="Missouri">
+          <option value="Montana">
+          <option value="Nebraska">
+          <option value="Nevada">
+          <option value="New Hampshire">
+          <option value="New Jersey">
+          <option value="New Mexico">
+          <option value="New York">
+          <option value="North Carolina">
+          <option value="North Dakota">
+          <option value="Ohio">
+          <option value="Oklahoma">
+          <option value="Oregon">
+          <option value="Pennsylvania">
+          <option value="Rhode Island">
+          <option value="South Carolina">
+          <option value="South Dakota">
+          <option value="Tennessee">
+          <option value="Texas">
+          <option value="Utah">
+          <option value="Vermont">
+          <option value="Virginia">
+          <option value="Washington">
+          <option value="West Virginia">
+          <option value="Wisconsin">
+          <option value="Wyoming">
+        </datalist>
+        <br>
+        <input type="submit" name="btn" value="search"/>
+        <br>
+    </form>
+    <br>
+    {% if context is defined %}
+      {% if context.policy is defined %}
+        {{context.state}}'s post-election auditing procedure: {{ context.policy }}
+      {% endif %}
+      <br>
+      <br>
+      {% if context.prob is defined %}
+        {{context.state}}'s probability of detecting interference in the 2016 Presidential election with the above procedure is: {{ context.prob }}
+      {% endif %}
+    {% endif %}
+    <br>
+    <br>
+  </div>
+	<div class="container">
+    Simulate an audit.
+		<form action="" method="get" enctype="multipart/form-data">
+  			State:<br>
+  			<input list="states" name="state">
+  			<datalist id="states">
+    			<option value="Alabama">
+    			<option value="Alaska">
+    			<option value="Arizona">
+    			<option value="Arkansas">
+    			<option value="California">
+    			<option value="Colorado">
+    			<option value="Connecticut">
+    			<option value="District of Columbia">
+    			<option value="Delaware">
+    			<option value="Florida">
+    			<option value="Georgia">
+    			<option value="Hawaii">
+    			<option value="Idaho">
+    			<option value="Illinois">
+    			<option value="Indiana">
+    			<option value="Iowa">
+    			<option value="Kansas">
+    			<option value="Kentucky">
+    			<option value="Louisiana">
+    			<option value="Maine">
+    			<option value="Maryland">
+    			<option value="Massachusetts">
+    			<option value="Michigan">
+    			<option value="Minnesota">
+    			<option value="Mississippi">
+    			<option value="Missouri">
+    			<option value="Montana">
+    			<option value="Nebraska">
+    			<option value="Nevada">
+    			<option value="New Hampshire">
+    			<option value="New Jersey">
+    			<option value="New Mexico">
+    			<option value="New York">
+    			<option value="North Carolina">
+    			<option value="North Dakota">
+    			<option value="Ohio">
+    			<option value="Oklahoma">
+    			<option value="Oregon">
+    			<option value="Pennsylvania">
+    			<option value="Rhode Island">
+    			<option value="South Carolina">
+    			<option value="South Dakota">
+    			<option value="Tennessee">
+    			<option value="Texas">
+    			<option value="Utah">
+    			<option value="Vermont">
+    			<option value="Virginia">
+    			<option value="Washington">
+    			<option value="West Virginia">
+    			<option value="Wisconsin">
+    			<option value="Wyoming">
+  			</datalist>
+  			<br>
+  			Mode:<br>
+  			<input list="audit_types" name="audit_type">
+  			<datalist id="audit_types">
+    			<option value="Percentage of all precincts.">
+    			<option value="Percentage of precincts in each county.">
+    			<option value="Percentage of ballots in each county.">
+    			<option value="Percentage of ballots in the state.">
+  			</datalist>
+  			<br>
+  			Column:<br>
+  			<input list="cols" name="col">
+  			<datalist id="cols">
+    			<option value="precinct">
+    			<option value="ward">
+    			<option value="disctrict">
+    			<option value="county">
+  			</datalist>
+  			<br>
+  			Race:<br>
+  			<input list="races" name="race">
+  			<datalist id="races">
+    			<option value="President">
+  			</datalist>
+  			<br>
+  			Percent:<br>
+  			<input type="range" min="0" max="1" step="0.001" value=".05" name="percent" id="percentInputId" oninput="percentOutputId.value = percentInputId.value">
+        <output name="percentOutputName" id="percentOutputId">.05</output>
+        <br>
+  			<input type="submit" name="btn" value="calculate"/>
+  			<br>
+		</form>
+	</div>
+
+	{% if context is defined %}
+    {% if context.audit_type is defined %}
+      An audit in {{ context.state }} using audit type " {{ context.audit_type }} " and parsing the 2016 {{ context.race }} race data on {{ context.col }} with an auditing percentage of {{ context.percent}} : <br>
+		  {{ context.prob }}
+    {% endif %}
+	{% endif %}
+
+</body>
+
+</html>

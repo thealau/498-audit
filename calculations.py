@@ -8,7 +8,7 @@ def audit_precinct(percentage, data_dict):
     winner_name = state_wide_sorted[0][0]
     second_place = state_wide_sorted[1][0]
     total_num_precincts = len(data_dict["results"])
-    print(total_num_precincts)
+    # print(total_num_precincts)
     precincts_sorted = sorted(data_dict["results"], key=lambda k: k["vote_totals"].get(winner_name, 0), reverse=True)
     winner_total = 0
     count = 0
@@ -17,7 +17,7 @@ def audit_precinct(percentage, data_dict):
         count += 1
     num_to_flip = count
     prob_miss_interf = 1
-    print(num_to_flip)
+    # print(num_to_flip)
     for i in range(0, ceil(percentage*total_num_precincts)):
         prob_miss_interf *= (total_num_precincts - i - num_to_flip)/(total_num_precincts - i)
     print("Probability of detecting interference:", round(1 - prob_miss_interf, 4))
@@ -30,20 +30,20 @@ def audit_percent_votes_county(percentage, data_dict):
     winner_name = state_wide_sorted[0][0]
     second_place = state_wide_sorted[1][0]
     first_second_total = state_wide_sorted[0][1] + state_wide_sorted[1][1]
-    print(first_second_total)
-    print(winner_name)
-    print(second_place)
-    print(votes_to_flip)
+    # print(first_second_total)
+    # print(winner_name)
+    # print(second_place)
+    # print(votes_to_flip)
     prob_miss_interf = Decimal(1)
     for county in data_dict["results"]:
         winner_votes = county["vote_totals"][winner_name]
         second_place_votes = county["vote_totals"][second_place]
         votes_flipped = ((winner_votes + second_place_votes)/first_second_total) * votes_to_flip
-        print(votes_flipped)
+        # print(votes_flipped)
         num_votes_county = county["vote_totals"]["num_votes"]
         num_sampled = int(ceil(percentage * num_votes_county))
         bad_thresh = int(ceil(num_sampled*.005))
-        print(bad_thresh)
+        # print(bad_thresh)
         county_prob = Decimal(0)
         for i in range(0, bad_thresh):
             temp_prob = Decimal(1)
@@ -65,8 +65,8 @@ def audit_state(percentage, data_dict):
     for i in range(0, len(data_dict)):
         total += state_wide_sorted[i][1]
     votes_to_flip = difference/2
-    print(votes_to_flip)
-    print(total)
+    # print(votes_to_flip)
+    # print(total)
     num_sampled = int(ceil(percentage*total))
     bad_thresh = int(ceil(num_sampled * .005))
     prob_miss_interf = 0
@@ -88,8 +88,9 @@ def audit_percent_precincts_county(percentage, data_dict):
     votes_to_flip = difference/2
     winner_name = state_wide_sorted[0][0]
     second_place = state_wide_sorted[1][0]
-    print(winner_name, second_place)
-    print(votes_to_flip)
+    # print(winner_name, second_place)
+    # print(votes_to_flip)
+    # print(data_dict["results"])
     votes_flipped = 0
     counties = {}
     for cty in data_dict["results"]:
@@ -119,8 +120,8 @@ def audit_percent_precincts_county(percentage, data_dict):
                 max_county_prob = prob_miss_interf
                 max_county_votes = sorted_precincts[num_precincts_flipped][winner_name]
         votes_flipped += max_county_votes
-        print(max_county_votes)
-        print(max_county)
+        # print(max_county_votes)
+        # print(max_county)
         probabilities[max_county] = max_county_prob
         counties[max_county]["num_flipped"] += 1
     final_prob = 1
