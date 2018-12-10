@@ -21,14 +21,22 @@ def show_index():
 
     if(request.args.get('btn') == "calculate"):
         state_csvs_dict = {};
+        state_csvs_dict["Arkansas"] = "20161108__ak__general__precinct.csv"
+        state_csvs_dict["California"] = "2016_precinct_california.csv"
         state_csvs_dict["Connecticut"] = "20161108__ct__general__precinct.csv"
         state_csvs_dict["District of Columbia"] = "20161108__dc__general__precinct.csv"
         state_csvs_dict["Hawaii"] = "20161108__hi__general__precinct.csv"
         state_csvs_dict["Illinois"] = "20161108__il__general__precinct.csv"
+        state_csvs_dict["Iowa"] = "20161108__ia__general__precinct.csv"
         state_csvs_dict["Massachusetts"] = "20161108__ma__general__precinct.csv"
         state_csvs_dict["Michigan"] = "20161108__mi__general__precinct.csv"
+        state_csvs_dict["Minnesota"] = "20161108__mn__general__precinct.csv"
+        state_csvs_dict["Missouri"] = "20161108__mo__general__precinct.csv"
+        state_csvs_dict["Montana"] = "20161108__mt__general__precinct.csv"
+        state_csvs_dict["Nebraska"] = "20161108__ne__general__precinct.csv"
         state_csvs_dict["Nevada"] = "20161108__nv__general__county.csv"
         state_csvs_dict["New York"] = "20161108__ny__general.csv"
+        state_csvs_dict["Ohio"] = "20161108__oh__general.csv"
         state_csvs_dict["Oregon"] = "20161108__or__general__precinct.csv"
         state_csvs_dict["Pennsylvania"] = "20161108__pa__general__precinct.csv"
         state_csvs_dict["Texas"] = "20161108__tx__general__county.csv"

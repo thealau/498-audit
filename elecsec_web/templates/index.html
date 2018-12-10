@@ -27,7 +27,7 @@
                 <form action="" method="get" enctype="multipart/form-data">
                   <div class="md-form">
                     <h1 class="h6 white-text">State:</h1>
-                    <input list="states" name="state_audit" id="form15" class="form-control">
+                    <input list="states" name="state_audit" id="form15" class="form-control list-control">
                     <datalist id="states">
                       <option value="Alabama">
                       <option value="Alaska">
@@ -114,7 +114,7 @@
             		<form action="" method="get" enctype="multipart/form-data">
                   <div class="md-form">
                     <h1 class="h6 white-text">State:</h1>
-              			<input list="states" name="state" id="form15" class="form-control">
+              			<input list="states" name="state" id="form15" class="form-control list-control">
               			<datalist id="states">
                 			<option value="Alabama">
                 			<option value="Alaska">
@@ -169,7 +169,7 @@
                 			<option value="Wyoming">
               			</datalist>
                     <h1 class="h6 white-text">Mode:</h1>
-              			<input list="audit_types" name="audit_type" id="form15" class="form-control">
+              			<input list="audit_types" name="audit_type" id="form15" class="form-control list-control">
               			<datalist id="audit_types">
                 			<option value="Percentage of all precincts.">
                 			<option value="Percentage of precincts in each county.">
@@ -177,7 +177,7 @@
                 			<option value="Percentage of ballots in the state.">
               			</datalist>
                     <h1 class="h6 white-text">Column:</h1>
-              			<input list="cols" name="col" id="form15" class="form-control">
+              			<input list="cols" name="col" id="form15" class="form-control list-control">
               			<datalist id="cols">
                 			<option value="precinct">
                 			<option value="ward">
@@ -185,12 +185,12 @@
                 			<option value="county">
               			</datalist>
                     <h1 class="h6 white-text">Race:</h1>
-              			<input list="races" name="race" id="form15" class="form-control">
+              			<input list="races" name="race" id="form15" class="form-control list-control">
               			<datalist id="races">
                 			<option value="President">
               			</datalist>
                     <h1 class="h6 white-text">Percent:</h1>
-              			<input type="range" min="0" max="1" step="0.001" value=".05" name="percent" id="percentInputId" oninput="percentOutputId.value = percentInputId.value" id="form15">
+              			<input type="range" min="0" max="1" step="0.001" value=".05" name="percent" id="percentInputId" oninput="percentOutputId.value = percentInputId.value" id="form15" class=" list-control">
                     <output name="percentOutputName" id="percentOutputId" class="white-text">.05</output>
                     <br>
               			<input type="submit" name="btn" class="btnSubmit" value="calculate"/>
