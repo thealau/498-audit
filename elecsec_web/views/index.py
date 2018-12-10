@@ -16,7 +16,7 @@ def show_index():
             state = ?", [request.args.get('state_audit')], one=True)
         context['state'] = request.args.get('state_audit')
         context['policy'] = state_data['policy']
-        context['prob'] = state_data['prob']
+        context['autoprob'] = state_data['prob']
         return flask.render_template("index.html", context=context)
 
     if(request.args.get('btn') == "calculate"):
