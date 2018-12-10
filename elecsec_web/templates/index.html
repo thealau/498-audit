@@ -85,10 +85,8 @@
                     <div class="text-center">
                       <input type="submit" class="btnSubmit" value="search" name="btn"/>
                     </div>
-                    <br>
                   </div>
                 </form>
-                <br>
                 <h1 class="font-bold mt-4 mb-3 h5 white-text">
                 {% if context is defined %}
                   {% if context.policy is defined %}
@@ -190,11 +188,10 @@
                 			<option value="President">
               			</datalist>
                     <h1 class="h6 white-text">Percent:</h1>
-              			<input type="range" min="0" max="1" step="0.001" value=".05" name="percent" id="percentInputId" oninput="percentOutputId.value = percentInputId.value" id="form15" class=" list-control">
-                    <output name="percentOutputName" id="percentOutputId" class="white-text">.05</output>
+              			<input type="range" min="0" max="1" step="0.001" value=".02" name="percent" id="percentInputId" oninput="percentOutputId.value = percentInputId.value" id="form15" class=" list-control">
+                    <output name="percentOutputName" id="percentOutputId" class="white-text">.02</output>
                     <br>
               			<input type="submit" name="btn" class="btnSubmit" value="calculate"/>
-              			<br>
                   </div>
             		</form>
                 <h1 class="font-bold mt-4 mb-3 h5 white-text">
